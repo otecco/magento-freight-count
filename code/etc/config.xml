@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Shopix_FreightCount - Override the number of items for Magento shipping Table Rates
+    Copyright (C) 2014 Shopix Pty Ltd (http://www.shopix.com.au)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<config>
+    <modules>
+        <Shopix_FreightCount>
+            <version>1.0.2</version>
+        </Shopix_FreightCount>
+    </modules>
+
+    <global>
+        <models>
+            <freight_count>
+                <class>Shopix_FreightCount_Model</class>
+            </freight_count>
+
+            <shipping>
+                <rewrite>
+                    <carrier_tablerate>Shopix_FreightCount_Model_Shipping_Carrier_Tablerate</carrier_tablerate>
+                </rewrite>
+            </shipping>
+        </models>
+
+        <resources>
+            <freight_count_setup>
+                <setup>
+                    <module>Shopix_FreightCount</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+            </freight_count_setup>
+        </resources>
+
+        <sales>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <freight_count />
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
+
+        <events>
+            <sales_quote_item_set_product>
+                <observers>
+                    <shopix_freight_count>
+                        <class>freight_count/observer</class>
+                        <method>salesQuoteItemSetFreightCount</method>
+                    </shopix_freight_count>
+                </observers>
+            </sales_quote_item_set_product>
+        </events>
+
+        <fieldsets>
+            <sales_convert_quote_item>
+                <freight_count>
+                    <to_order_item>*</to_order_item>
+                </freight_count>
+            </sales_convert_quote_item>
+
+            <sales_convert_order_item>
+                <freight_count>
+                    <to_quote_item>*</to_quote_item>
+                </freight_count>
+            </sales_convert_order_item>
+        </fieldsets>
+
+    </global>
+
+</config>
+
+
+
